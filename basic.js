@@ -38,6 +38,8 @@ function BasicAzureTableSamples() {
 }
 
 function basicTableOperations(callback) {
+  
+  //  <CreateTable>
   // Create or reference an existing table 
   storageClient.createTableIfNotExists(tableName, function (error, createResult) {
     if (error) return callback(error);
@@ -45,7 +47,9 @@ function basicTableOperations(callback) {
     if (createResult.isSuccessful) {
       console.log("1. Create Table operation executed successfully for: ", tableName);
     }
+    //  </CreateTable>
 
+    //  <InsertItem>
     console.log("2. Inserting or updating an entity using insertOrMergeEntity function.");
     var customer = createCustomerEntityDescriptor("Harp", "Walter", "Walter@contoso.com", "425-555-0101");
 
@@ -53,7 +57,8 @@ function basicTableOperations(callback) {
       if (error) return callback(error);
 
       console.log("   insertOrMergeEntity succeeded.");
-
+    //  </InsertItem>
+      
       console.log("3. Reading the updated entity.");
 
       // Demonstrate the most efficient storage query - the point query - where both partition key and row key are specified. 
@@ -62,13 +67,15 @@ function basicTableOperations(callback) {
 
         console.log("   retrieveEntity succeeded: ", result.PartitionKey._, result.RowKey._, result.email._, result.phone._);
 
+        //  <DeleteItem>
         console.log("4. Deleting the entity. ");
 
         storageClient.deleteEntity(tableName, customer, function entitiesQueried(error, result) {
           if (error) return callback(error);
 
           console.log("   deleteEntity succeeded.");
-
+        //  </DeleteItem>
+          
           // Demonstrates upsert and batch table operations
           console.log("5. Inserting a batch of entities. ");
 
@@ -145,6 +152,7 @@ function basicTableOperations(callback) {
 * @param {TableContinuationToken} continuationToken Continuation token to continue a query
 * @param {function}               callback          Additional sample operations to run after this one completes   
 */
+//  <QueryItem>
 function runPageQuery(tableQuery, continuationToken, callback) {
 
   storageClient.queryEntities(tableName, tableQuery, continuationToken, function (error, result) {
@@ -164,6 +172,7 @@ function runPageQuery(tableQuery, continuationToken, callback) {
     }
   });
 }
+//  </QueryItem>
 
 /**
 * Adds paddings to a string. 
